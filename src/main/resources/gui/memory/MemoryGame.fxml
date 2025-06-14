@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+
+<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.memory.MemoryGameController" alignment="CENTER" spacing="25" style="-fx-background-color: #1a1a1a; -fx-padding: 30;">
+    
+    <!-- Username top-left and close button top-right -->
+    <HBox alignment="CENTER_LEFT" style="-fx-padding: 0 0 8 0; -fx-background-color: transparent;">
+        <Label fx:id="usernameLabel" text="" style="-fx-text-fill: #bbbbbb; -fx-font-size: 18px; -fx-font-family: Roboto; -fx-padding: 0 0 0 8;"/>
+        <Button fx:id="logoutButton" text="↩" style="-fx-background-color: transparent; -fx-text-fill: #bbbbbb; -fx-font-size: 22px; -fx-font-family: Roboto; -fx-min-width: 32; -fx-min-height: 32; -fx-max-width: 32; -fx-max-height: 32; -fx-padding: 0 0 0 8; -fx-cursor: hand; -fx-border-color: transparent;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button fx:id="closeButton" text="X" style="-fx-background-color: transparent; -fx-text-fill: #e74c3c; -fx-font-size: 22px; -fx-font-family: Roboto; -fx-min-width: 38; -fx-min-height: 38; -fx-max-width: 38; -fx-max-height: 38; -fx-padding: 0; -fx-cursor: hand; -fx-border-color: transparent;"/>
+    </HBox>
+
+    <!-- Header Section (gray box) -->
+    <VBox fx:id="headerBox" alignment="CENTER" spacing="0" style="-fx-background-color: #2a2a2a; -fx-background-radius: 10; -fx-padding: 0 0 0 0; -fx-border-color: #404040; -fx-border-width: 1; -fx-border-radius: 10;">
+        <Label text="Memory Game" textFill="#FFFFFF" style="-fx-font-family: Roboto; -fx-font-size: 32px; -fx-padding: 10 0 0 0;"/>
+        <Label text="Challenge your mind with this memory game" textFill="#CCCCCC" style="-fx-font-family: Roboto; -fx-font-size: 14px; -fx-padding: 0 0 10 0;"/>
+    </VBox>
+
+    <!-- Control Panel -->
+    <HBox alignment="CENTER" spacing="20" style="-fx-background-color: #2a2a2a; -fx-background-radius: 10; -fx-padding: 20; -fx-border-color: #404040; -fx-border-width: 1; -fx-border-radius: 10;">
+        <VBox alignment="CENTER" spacing="5">
+            <Label text="DIFFICULTY" textFill="#999999" style="-fx-font-family: Roboto; -fx-font-size: 11px;"/>
+            <ComboBox fx:id="difficultyBox"
+                      style="-fx-background-color: #222; -fx-text-fill: #fff; -fx-font-size: 15px; -fx-font-family: Roboto; -fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #555; -fx-border-width: 1;"
+                      prefWidth="220"/>
+        </VBox>
+        <Separator orientation="VERTICAL" style="-fx-background-color: #555555;"/>
+        <Button fx:id="restartButton" onAction="#handleRestartGame" text="🔄 NEW GAME" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-family: Roboto; -fx-font-size: 13px; -fx-background-radius: 5; -fx-border-radius: 5; -fx-padding: 12 24; -fx-cursor: hand;"/>
+    </HBox>
+
+    <!-- Stats Panel -->
+    <HBox alignment="CENTER" spacing="40" style="-fx-background-color: #2a2a2a; -fx-background-radius: 10; -fx-padding: 20; -fx-border-color: #404040; -fx-border-width: 1; -fx-border-radius: 10;">
+        <VBox alignment="CENTER" spacing="5">
+            <Label text="ATTEMPTS" textFill="#999999" style="-fx-font-family: Roboto; -fx-font-size: 11px;"/>
+            <Label fx:id="attemptsLabel" text="0" textFill="#FFFFFF" style="-fx-font-family: Roboto; -fx-font-size: 24px;"/>
+        </VBox>
+        <Separator orientation="VERTICAL" style="-fx-background-color: #555555;"/>
+        <VBox alignment="CENTER" spacing="5">
+            <Label text="PAIRS FOUND" textFill="#999999" style="-fx-font-family: Roboto; -fx-font-size: 11px;"/>
+            <Label fx:id="pairsFoundLabel" text="0/8" textFill="#FFFFFF" style="-fx-font-family: Roboto; -fx-font-size: 24px;"/>
+        </VBox>
+        <Separator orientation="VERTICAL" style="-fx-background-color: #555555;"/>
+        <VBox alignment="CENTER" spacing="5">
+            <Label text="STATUS" textFill="#999999" style="-fx-font-family: Roboto; -fx-font-size: 11px;"/>
+            <Label fx:id="statusLabel" text="Find all pairs!" textFill="#3498db" style="-fx-font-family: Roboto; -fx-font-size: 14px;"/>
+        </VBox>
+    </HBox>
+
+    <!-- Game Grid Container -->
+    <VBox alignment="CENTER" style="-fx-background-color: #2a2a2a; -fx-background-radius: 10; -fx-padding: 30; -fx-border-color: #404040; -fx-border-width: 1; -fx-border-radius: 10;">
+        <GridPane fx:id="gameGrid" alignment="CENTER" hgap="12" vgap="12"/>
+    </VBox>
+</VBox>
