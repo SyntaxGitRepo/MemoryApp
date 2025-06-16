@@ -19,6 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.Pane;
 
 public class MemoryGameController implements Initializable {
 
@@ -67,6 +68,7 @@ public class MemoryGameController implements Initializable {
         setupLeaderboardButton();
         setupDifficultyBox();
         setupRestartButton();
+        setupDraggableBackgroundAndTopBar(); // updated method
         initializeGame();
     }
 
@@ -113,6 +115,42 @@ public class MemoryGameController implements Initializable {
         }
     }
 
+    // Enable dragging on the root VBox background and the top bar (username/logout HBox)
+    private void setupDraggableBackgroundAndTopBar() {
+        if (headerBox != null) {
+            VBox root = (VBox) headerBox.getParent();
+            // Drag on background
+            root.setOnMousePressed((MouseEvent event) -> {
+                if (event.getTarget() == root) {
+                    Stage stage = (Stage) root.getScene().getWindow();
+                    xOffset = stage.getX() - event.getScreenX();
+                    yOffset = stage.getY() - event.getScreenY();
+                }
+            });
+            root.setOnMouseDragged((MouseEvent event) -> {
+                if (event.getTarget() == root) {
+                    Stage stage = (Stage) root.getScene().getWindow();
+                    stage.setX(event.getScreenX() + xOffset);
+                    stage.setY(event.getScreenY() + yOffset);
+                }
+            });
+            // Drag on top bar (username/logout HBox)
+            if (root.getChildren().size() > 0 && root.getChildren().get(0) instanceof HBox) {
+                HBox topBar = (HBox) root.getChildren().get(0);
+                topBar.setOnMousePressed((MouseEvent event) -> {
+                    Stage stage = (Stage) topBar.getScene().getWindow();
+                    xOffset = stage.getX() - event.getScreenX();
+                    yOffset = stage.getY() - event.getScreenY();
+                });
+                topBar.setOnMouseDragged((MouseEvent event) -> {
+                    Stage stage = (Stage) topBar.getScene().getWindow();
+                    stage.setX(event.getScreenX() + xOffset);
+                    stage.setY(event.getScreenY() + yOffset);
+                });
+            }
+        }
+    }
+
     private void setupLogoutButton() {
         if (logoutButton != null) {
             Tooltip.install(logoutButton, new Tooltip("Logout"));
@@ -134,7 +172,7 @@ public class MemoryGameController implements Initializable {
                 topBar = new HBox(8);
                 topBar.setAlignment(Pos.CENTER_RIGHT);
                 topBar.getStyleClass().add("top-bar-leaderboard");
-                Button btn = new Button("🏆");
+                Button btn = new Button("🏅"); // simplified emoji
                 btn.setStyle("-fx-background-color: transparent; -fx-text-fill: #f1c40f; -fx-font-size: 22px; -fx-font-family: Roboto; -fx-min-width: 38; -fx-min-height: 38; -fx-max-width: 38; -fx-max-height: 38; -fx-padding: 0; -fx-cursor: hand; -fx-border-color: transparent;");
                 btn.setTooltip(new Tooltip("Leaderboard"));
                 btn.setOnAction(e -> {
@@ -215,6 +253,7 @@ public class MemoryGameController implements Initializable {
     }
 
     private void setupRestartButton() {
+        restartButton.setText("⬛ NEW GAME"); // changed to a simple dark emoji
         restartButton.setStyle(
                 "-fx-background-color: #e74c3c; " +
                 "-fx-text-fill: white; " +
@@ -390,7 +429,7 @@ public class MemoryGameController implements Initializable {
     public void setUsername(String username) {
         this.username = username;
         if (usernameLabel != null) {
-            usernameLabel.setText("👤 " + username);
+            usernameLabel.setText("⚫ " + username); // changed to a simple dark emoji
         }
     }
 

@@ -15,11 +15,11 @@ public class Card {
     private boolean matched = false;
     private MemoryGameController controller;
 
-    // Dark mode color palette - simple solid colors
-    private static final String HIDDEN_COLOR = "#333333";
-    private static final String REVEALED_COLOR = "#3498db";
-    private static final String MATCHED_COLOR = "#27ae60";
-    private static final String HOVER_COLOR = "#555555";
+    // Dark mode color palette - even darker backgrounds
+    private static final String HIDDEN_COLOR = "#222222";
+    private static final String REVEALED_COLOR = "#223344";
+    private static final String MATCHED_COLOR = "#1e3d2f";
+    private static final String HOVER_COLOR = "#2a2a2a";
 
     public Card(String symbol, MemoryGameController controller) {
         this.symbol = symbol;

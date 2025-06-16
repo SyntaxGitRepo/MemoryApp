@@ -30,8 +30,8 @@
                       style="-fx-background-color: #222; -fx-text-fill: #fff; -fx-font-size: 15px; -fx-font-family: Roboto; -fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #555; -fx-border-width: 1;"
                       prefWidth="220"/>
         </VBox>
-        <Separator orientation="VERTICAL" style="-fx-background-color: #555555;"/>
-        <Button fx:id="restartButton" onAction="#handleRestartGame" text="🔄 NEW GAME" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-family: Roboto; -fx-font-size: 13px; -fx-background-radius: 5; -fx-border-radius: 5; -fx-padding: 12 24; -fx-cursor: hand;"/>
+        <Separator orientation="VERTICAL" style="-fx-background-color: #fff; -fx-max-width: 1; -fx-pref-width: 1; -fx-min-width: 1;"/>
+        <Button fx:id="restartButton" onAction="#handleRestartGame" text="⬛ NEW GAME" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-family: Roboto; -fx-font-size: 13px; -fx-background-radius: 5; -fx-border-radius: 5; -fx-padding: 12 24; -fx-cursor: hand;"/>
     </HBox>
 
     <!-- Stats Panel -->
@@ -40,12 +40,12 @@
             <Label text="ATTEMPTS" textFill="#999999" style="-fx-font-family: Roboto; -fx-font-size: 11px;"/>
             <Label fx:id="attemptsLabel" text="0" textFill="#FFFFFF" style="-fx-font-family: Roboto; -fx-font-size: 24px;"/>
         </VBox>
-        <Separator orientation="VERTICAL" style="-fx-background-color: #555555;"/>
+        <Separator orientation="VERTICAL" style="-fx-background-color: #fff; -fx-max-width: 1; -fx-pref-width: 1; -fx-min-width: 1;"/>
         <VBox alignment="CENTER" spacing="5">
             <Label text="PAIRS FOUND" textFill="#999999" style="-fx-font-family: Roboto; -fx-font-size: 11px;"/>
             <Label fx:id="pairsFoundLabel" text="0/8" textFill="#FFFFFF" style="-fx-font-family: Roboto; -fx-font-size: 24px;"/>
         </VBox>
-        <Separator orientation="VERTICAL" style="-fx-background-color: #555555;"/>
+        <Separator orientation="VERTICAL" style="-fx-background-color: #fff; -fx-max-width: 1; -fx-pref-width: 1; -fx-min-width: 1;"/>
         <VBox alignment="CENTER" spacing="5">
             <Label text="STATUS" textFill="#999999" style="-fx-font-family: Roboto; -fx-font-size: 11px;"/>
             <Label fx:id="statusLabel" text="Find all pairs!" textFill="#3498db" style="-fx-font-family: Roboto; -fx-font-size: 14px;"/>

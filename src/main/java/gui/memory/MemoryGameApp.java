@@ -20,6 +20,10 @@ public class MemoryGameApp extends Application {
     private static final String LEADERBOARD_FILE = "/gui/memory/leaderboard.json";
     private static final Map<String, ScoreEntry> leaderboard = new HashMap<>();
 
+    // For window dragging
+    private double xOffset = 0;
+    private double yOffset = 0;
+
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -28,77 +32,37 @@ public class MemoryGameApp extends Application {
         showUsernameScreen();
     }
 
-    private void showUsernameScreen() {
-        BorderPane root = new BorderPane();
-        root.setStyle("-fx-background-color: #1a1a1a; -fx-padding: 30;");
-
-        // ...existing code for topBar...
-        HBox topBar = new HBox();
-        topBar.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-        topBar.setSpacing(0);
-        topBar.setStyle("-fx-padding: 0 0 8 0; -fx-background-color: transparent;");
-
-        Label dummyUser = new Label();
-        dummyUser.setMinWidth(120);
-        dummyUser.setStyle("-fx-padding: 0 0 0 8;");
-
-        Button dummyLogout = new Button("↩");
-        dummyLogout.setDisable(true);
-        dummyLogout.setVisible(false);
-        dummyLogout.setMinWidth(32);
-
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        Button exitBtn = new Button("X");
-        exitBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #e74c3c; -fx-font-size: 22px; -fx-font-family: Roboto; -fx-min-width: 38; -fx-min-height: 38; -fx-max-width: 38; -fx-max-height: 38; -fx-padding: 0; -fx-cursor: hand; -fx-border-color: transparent;");
-        exitBtn.setOnAction(e -> primaryStage.close());
-        exitBtn.setOnMouseEntered(ev -> exitBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #c0392b; -fx-font-size: 22px; -fx-font-family: Roboto; -fx-min-width: 38; -fx-min-height: 38; -fx-max-width: 38; -fx-max-height: 38; -fx-padding: 0; -fx-cursor: hand; -fx-border-color: transparent;"));
-        exitBtn.setOnMouseExited(ev -> exitBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #e74c3c; -fx-font-size: 22px; -fx-font-family: Roboto; -fx-min-width: 38; -fx-min-height: 38; -fx-max-width: 38; -fx-max-height: 38; -fx-padding: 0; -fx-cursor: hand; -fx-border-color: transparent;"));
-
-        topBar.getChildren().addAll(dummyUser, dummyLogout, spacer, exitBtn);
-        root.setTop(topBar);
-
-        VBox centerBox = new VBox(20);
-        centerBox.setAlignment(javafx.geometry.Pos.CENTER);
-
-        Label label = new Label("Enter your username:");
-        label.setStyle("-fx-text-fill: #fff; -fx-font-size: 18px; -fx-font-family: Roboto;");
-
-        TextField usernameField = new TextField();
-        usernameField.setPromptText("Username");
-        usernameField.setStyle("-fx-background-color: #222; -fx-text-fill: #fff; -fx-font-size: 15px; -fx-font-family: Roboto; -fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #555; -fx-border-width: 1; -fx-padding: 8 12;");
-        usernameField.setMaxWidth(220);
-
-        Button continueBtn = new Button("Continue");
-        continueBtn.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-family: Roboto; -fx-font-size: 15px; -fx-background-radius: 5; -fx-border-radius: 5; -fx-padding: 10 24; -fx-cursor: hand;");
-        continueBtn.setDefaultButton(true);
-
-        Button leaderboardBtn = new Button("Leaderboard");
-        leaderboardBtn.setStyle("-fx-background-color: #232323; -fx-text-fill: #fff; -fx-font-family: Roboto; -fx-font-size: 15px; -fx-background-radius: 5; -fx-border-radius: 5; -fx-padding: 10 24; -fx-cursor: hand;");
-
-        Label errorLabel = new Label();
-        errorLabel.setStyle("-fx-text-fill: #e74c3c; -fx-font-size: 13px;");
-
-        continueBtn.setOnAction(e -> {
-            String username = usernameField.getText().trim();
-            if (username.isEmpty()) {
-                errorLabel.setText("Please enter a username.");
-            } else {
-                showGameScreen(username);
-            }
+    private void enableWindowDrag(Pane dragPane) {
+        dragPane.setOnMousePressed(event -> {
+            xOffset = primaryStage.getX() - event.getScreenX();
+            yOffset = primaryStage.getY() - event.getScreenY();
         });
+        dragPane.setOnMouseDragged(event -> {
+            primaryStage.setX(event.getScreenX() + xOffset);
+            primaryStage.setY(event.getScreenY() + yOffset);
+        });
+    }
 
-        leaderboardBtn.setOnAction(e -> showLeaderboardScreen(() -> showUsernameScreen()));
+    private void showUsernameScreen() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("UsernameScreen.fxml"));
+            AnchorPane root = loader.load();
+            UsernameScreenController controller = loader.getController();
 
-        centerBox.getChildren().addAll(label, usernameField, continueBtn, leaderboardBtn, errorLabel);
-        root.setCenter(centerBox);
+            // Set callbacks for continue and leaderboard actions
+            controller.setOnContinue(username -> showGameScreen(username));
+            controller.setOnLeaderboard(() -> showLeaderboardScreen(this::showUsernameScreen));
+            controller.setOnExit(() -> primaryStage.close());
+            controller.setWindowDragHandlers(primaryStage);
 
-        Scene scene = new Scene(root, 650, 850);
-        scene.setFill(javafx.scene.paint.Color.web("#1a1a1a"));
-        primaryStage.setTitle("Memory Game - Dark Mode");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+            Scene scene = new Scene(root, 650, 850);
+            scene.setFill(javafx.scene.paint.Color.web("#1a1a1a"));
+            primaryStage.setTitle("Memory Game - Dark Mode");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void showGameScreen(String username) {
@@ -134,7 +98,11 @@ public class MemoryGameApp extends Application {
         exitBtn.setOnMouseExited(ev -> exitBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #e74c3c; -fx-font-size: 22px; -fx-font-family: Roboto; -fx-min-width: 38; -fx-min-height: 38; -fx-max-width: 38; -fx-max-height: 38; -fx-padding: 0; -fx-cursor: hand; -fx-border-color: transparent;"));
         topBar.getChildren().add(exitBtn);
 
-        Label title = new Label("🏆 Leaderboard");
+        // Enable window drag on topBar and background
+        enableWindowDrag(topBar);
+        enableWindowDrag(root);
+
+        Label title = new Label("🏅 Leaderboard");
         title.setStyle("-fx-text-fill: #fff; -fx-font-size: 32px; -fx-font-family: Roboto; -fx-padding: 0 0 20 0;");
 
         VBox board = new VBox(10);
@@ -265,18 +233,6 @@ public class MemoryGameApp extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public static class ScoreEntry {
-        public final String username;
-        public final int score;
-        public final String mode;
-        public ScoreEntry(String username, int score, String mode) {
-            this.username = username;
-            this.score = score;
-            this.mode = mode;
-        }
-        public int score() { return score; }
     }
 
     public static void main(String[] args) {
