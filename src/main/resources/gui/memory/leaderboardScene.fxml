@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="rootPane" xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="gui.memory.LeaderboardController"
+            prefHeight="850.0" prefWidth="650.0"
+            stylesheets="@style.css"
+            styleClass="leaderboard-root">
+    <children>
+        <VBox alignment="TOP_CENTER" spacing="30" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0">
+            <children>
+                <HBox fx:id="topBar" alignment="TOP_RIGHT" styleClass="top-bar">
+                    <children>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="exitBtn" text="X" styleClass="exit-btn"/>
+                    </children>
+                </HBox>
+                <Label fx:id="title" text="🏅 Leaderboard" styleClass="leaderboard-title"/>
+                <VBox fx:id="board" spacing="10" alignment="CENTER" styleClass="leaderboard-board">
+                    <children>
+                        <GridPane fx:id="leaderboardGrid" hgap="30" vgap="8" maxWidth="Infinity">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="15"/>
+                                <ColumnConstraints percentWidth="35" hgrow="ALWAYS"/>
+                                <ColumnConstraints percentWidth="25" hgrow="ALWAYS"/>
+                                <ColumnConstraints percentWidth="25" hgrow="ALWAYS"/>
+                            </columnConstraints>
+                            <children>
+                                <Label text="Rank" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="leaderboard-header-rank"/>
+                                <Label text="Name" GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="leaderboard-header-name"/>
+                                <Label text="Score" GridPane.rowIndex="0" GridPane.columnIndex="2" styleClass="leaderboard-header-score"/>
+                                <Label text="Mode" GridPane.rowIndex="0" GridPane.columnIndex="3" styleClass="leaderboard-header-mode"/>
+                            </children>
+                        </GridPane>
+                    </children>
+                </VBox>
+                <Button fx:id="backBtn" text="Back" styleClass="back-btn"/>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

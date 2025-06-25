@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="rootPane" xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="gui.memory.UsernameController"
+            prefHeight="850.0" prefWidth="650.0"
+            stylesheets="@style.css"
+            styleClass="username-root">
+    <children>
+        <!-- Move topBar here so it is always at the top -->
+        <HBox fx:id="topBar" alignment="CENTER_LEFT" spacing="0" styleClass="top-bar"
+              AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+            <children>
+                <Label fx:id="dummyUser" minWidth="120" styleClass="dummy-user"/>
+                <Button fx:id="dummyLogout" text="↩" minWidth="32" visible="false" disable="true"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button fx:id="exitBtn" text="X" styleClass="exit-btn"/>
+            </children>
+        </HBox>
+        <VBox alignment="CENTER" spacing="20"
+              AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+              AnchorPane.topAnchor="46" AnchorPane.bottomAnchor="0">
+            <children>
+                <Label text="Enter your username:" styleClass="username-prompt"/>
+                <TextField fx:id="usernameField" promptText="Username" maxWidth="220" styleClass="username-field"/>
+                <Button fx:id="loginBtn" text="Login" styleClass="login-btn"/>
+                <Button fx:id="leaderboardBtn" text="Leaderboard" styleClass="leaderboard-btn"/>
+                <Label fx:id="errorLabel" styleClass="error-label"/>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

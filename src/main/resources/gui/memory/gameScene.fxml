@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<AnchorPane fx:id="rootPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.memory.MemoryGameController"
+            stylesheets="@style.css"
+            styleClass="game-root"
+            prefHeight="850.0" prefWidth="650.0">
+    <VBox alignment="CENTER" spacing="25" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+        <!-- Username top-left and close button top-right -->
+        <HBox alignment="CENTER_LEFT" styleClass="top-bar">
+            <ImageView fitHeight="28" fitWidth="28">
+                <image>
+                    <Image url="@AccountIcon.png"/>
+                </image>
+            </ImageView>
+            <Label fx:id="usernameLabel" text="" styleClass="username-label"/>
+            <Button fx:id="logoutButton" text="↩" styleClass="logout-btn"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="leaderboardButton" text="🏅" styleClass="leaderboard-btn"/>
+            <Button fx:id="closeButton" text="X" styleClass="exit-btn"/>
+        </HBox>
+
+        <!-- Header Section (gray box) -->
+        <VBox fx:id="headerBox" alignment="CENTER" spacing="0" styleClass="header-box">
+            <Label text="Memory Game" textFill="#FFFFFF" styleClass="header-title"/>
+            <Label text="Challenge your mind with this memory game" textFill="#CCCCCC" styleClass="header-subtitle"/>
+        </VBox>
+
+        <!-- Control Panel -->
+        <HBox alignment="CENTER" spacing="20" styleClass="control-panel">
+            <VBox alignment="CENTER" spacing="5">
+                <Label text="DIFFICULTY" textFill="#999999" styleClass="panel-label"/>
+                <ComboBox fx:id="difficultyBox"
+                          styleClass="difficulty-box"
+                          prefWidth="220" value="4×4 (Easy)">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="4×4 (Easy)" />
+                            <String fx:value="6×4 (Medium)" />
+                            <String fx:value="6×6 (Hard)" />
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+            </VBox>
+            <Separator orientation="VERTICAL" styleClass="v-separator"/>
+            <Button fx:id="restartButton" onAction="#handleRestartGame" text="⬛ NEW GAME" styleClass="restart-btn"/>
+        </HBox>
+
+        <!-- Stats Panel -->
+        <HBox alignment="CENTER" spacing="40" styleClass="stats-panel">
+            <VBox alignment="CENTER" spacing="5">
+                <Label text="ATTEMPTS" textFill="#999999" styleClass="panel-label"/>
+                <Label fx:id="attemptsLabel" text="0" textFill="#FFFFFF" styleClass="stat-value"/>
+            </VBox>
+            <Separator orientation="VERTICAL" styleClass="v-separator"/>
+            <VBox alignment="CENTER" spacing="5">
+                <Label text="PAIRS FOUND" textFill="#999999" styleClass="panel-label"/>
+                <Label fx:id="pairsFoundLabel" text="0/8" textFill="#FFFFFF" styleClass="stat-value"/>
+            </VBox>
+            <Separator orientation="VERTICAL" styleClass="v-separator"/>
+            <VBox alignment="CENTER" spacing="5">
+                <Label text="STATUS" textFill="#999999" styleClass="panel-label"/>
+                <Label fx:id="statusLabel" text="Find all pairs!" textFill="#3498db" styleClass="status-label"/>
+            </VBox>
+        </HBox>
+
+        <!-- Game Grid Container -->
+        <VBox alignment="CENTER" styleClass="game-grid-container">
+            <GridPane fx:id="gameGrid" alignment="CENTER" hgap="12" vgap="12"/>
+        </VBox>
+    </VBox>
+</AnchorPane>

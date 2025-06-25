@@ -1,12 +1,6 @@
 package gui.memory;
 
-import javafx.animation.*;
 import javafx.scene.control.Button;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.util.Duration;
 
 public class Card {
     private Button button;
@@ -14,12 +8,6 @@ public class Card {
     private boolean revealed = false;
     private boolean matched = false;
     private MemoryGameController controller;
-
-    // Dark mode color palette - even darker backgrounds
-    private static final String HIDDEN_COLOR = "#222222";
-    private static final String REVEALED_COLOR = "#223344";
-    private static final String MATCHED_COLOR = "#1e3d2f";
-    private static final String HOVER_COLOR = "#2a2a2a";
 
     public Card(String symbol, MemoryGameController controller) {
         this.symbol = symbol;
@@ -30,83 +18,61 @@ public class Card {
 
     private void setupButton() {
         button.setPrefSize(90, 90);
-        button.setFont(Font.font("Arial", 28));
-        button.setText("?");
-
-        applyHiddenStyle();
-        setupHoverEffects();
+        button.setFocusTraversable(false);
+        button.getStyleClass().add("card-button");
+        button.setText(""); // Hidden state: no symbol
         button.setOnAction(e -> controller.onCardClick(this));
-    }
 
-    private void applyHiddenStyle() {
-        button.setStyle(
-                "-fx-background-color: " + HIDDEN_COLOR + "; " +
-                "-fx-text-fill: #FFFFFF; " +
-                "-fx-background-radius: 5; " +
-                "-fx-border-radius: 5; " +
-                "-fx-border-color: #555555; " +
-                "-fx-border-width: 1; " +
-                "-fx-font-family: Arial; " +
-                "-fx-cursor: hand;"
-        );
-    }
-
-    private void setupHoverEffects() {
         button.setOnMouseEntered(e -> {
             if (!revealed && !matched) {
-                button.setStyle(
-                        "-fx-background-color: " + HOVER_COLOR + "; " +
-                        "-fx-text-fill: #FFFFFF; " +
-                        "-fx-background-radius: 5; " +
-                        "-fx-border-radius: 5; " +
-                        "-fx-border-color: #777777; " +
-                        "-fx-border-width: 1; " +
-                        "-fx-font-family: Arial; " +
-                        "-fx-cursor: hand;"
-                );
+                button.getStyleClass().removeAll("card-button", "card-flipped", "card-matched", "card-wrong");
+                button.getStyleClass().add("card-button");
+                // Hover effect is handled by CSS :hover
             }
         });
-
         button.setOnMouseExited(e -> {
             if (!revealed && !matched) {
-                applyHiddenStyle();
+                button.getStyleClass().removeAll("card-button", "card-flipped", "card-matched", "card-wrong");
+                button.getStyleClass().add("card-button");
             }
         });
     }
 
     public void reveal() {
         revealed = true;
+        button.getStyleClass().removeAll("card-button", "card-flipped", "card-matched", "card-wrong");
+        button.getStyleClass().add("card-flipped");
         button.setText(symbol);
-        button.setStyle(
-                "-fx-background-color: " + REVEALED_COLOR + "; " +
-                "-fx-text-fill: #FFFFFF; " +
-                "-fx-background-radius: 5; " +
-                "-fx-border-radius: 5; " +
-                "-fx-border-color: #555555; " +
-                "-fx-border-width: 1; " +
-                "-fx-font-family: Arial;"
-        );
     }
 
     public void hide() {
         revealed = false;
-        button.setText("?");
-        applyHiddenStyle();
+        if (!matched) {
+            button.getStyleClass().removeAll("card-flipped", "card-matched", "card-wrong");
+            if (!button.getStyleClass().contains("card-button")) {
+                button.getStyleClass().add("card-button");
+            }
+            button.setText(""); // Hide symbol
+        }
     }
 
     public void setMatched(boolean matched) {
         this.matched = matched;
         if (matched) {
-            button.setStyle(
-                    "-fx-background-color: " + MATCHED_COLOR + "; " +
-                    "-fx-text-fill: #FFFFFF; " +
-                    "-fx-background-radius: 5; " +
-                    "-fx-border-radius: 5; " +
-                    "-fx-border-color: #555555; " +
-                    "-fx-border-width: 1; " +
-                    "-fx-font-family: Arial;"
-            );
+            button.getStyleClass().removeAll("card-button", "card-flipped", "card-wrong");
+            button.getStyleClass().add("card-matched");
+            button.setText(symbol);
+        } else {
+            hide();
         }
+    }
+
+    // Optional: show wrong state for mismatched cards
+    public void showWrong() {
+        if (matched) return;
+        button.getStyleClass().removeAll("card-button", "card-flipped", "card-matched");
+        button.getStyleClass().add("card-wrong");
+        button.setText(symbol);
     }
 
     // Getters
